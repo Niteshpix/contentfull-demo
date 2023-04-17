@@ -1,0 +1,43 @@
+.comment {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .author {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .content {
+    margin-bottom: 10px;
+  }
+  
+  .rating-card {
+    display: flex;
+    align-items: center;
+  }
+  
+  .stars {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .star {
+    font-size: 1.2em;
+    color: #ccc;
+  }
+  
+  .checked {
+    color: orange;
+  }
+  
+  .rating {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: orange;
+  }
+  

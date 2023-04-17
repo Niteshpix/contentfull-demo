@@ -4,17 +4,29 @@ import { client } from "../config/client";
 import { Card } from "react-bootstrap";
 import { marked } from "marked";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
+import { FeedbackForm } from "./rating";
+import Comment from "./comments";
 
 function PostDetails() {
   const { id } = useParams();
   const [singlepost, setSinglePost] = useState();
+  const [feedback, setFeedbcak] = useState();
+
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchPost() {
-      client.getEntry(id).then(function (entry) {
-        setSinglePost(entry.fields);
-      });
+      try {
+        client.getEntry(id).then(function (entry) {
+          setSinglePost(entry.fields);
+        });
+        const response = await client.getEntries({
+          content_type: "feedback",
+        });
+        setFeedbcak(response.items);
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchPost();
   }, [id]);
@@ -28,10 +40,10 @@ function PostDetails() {
   };
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <div
         className="post-wrapper"
-        style={{ marginLeft: "100px", marginTop: "30px", width: "90%" }}
+        style={{ marginLeft: "100px", marginTop: "30px", width: "60%" }}
       >
         <div className={"d-flex align-center"}>
           <button
@@ -65,7 +77,18 @@ function PostDetails() {
             style={{ height: "380px", width: "500px" }}
           />
         </Card>
+        <div className="cmnts" style={{ padding: "30px" }}>
+          {feedback
+            ?.filter((comment) => comment.fields.postid === id)
+            ?.map((comment, i) => (
+              <div key={`comment-${i}`}>
+                <h3>Feedback</h3>
+                <Comment key={`comment-${i}`} {...comment.fields} />
+              </div>
+            ))}
+        </div>
       </div>
+      <FeedbackForm postid={id} />
     </div>
   );
 }
